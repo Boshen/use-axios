@@ -1,0 +1,74 @@
+{
+  "name": "use-axios",
+  "version": "1.0.0",
+  "description": "useAxios react hook",
+  "license": "MIT",
+  "author": "Boshen <boshenc@gmail.com>",
+  "keywords": ["axios", "react", "hooks"],
+  "homepage": "https://github.com/boshen/use-axios",
+  "repository": "git@github.com:Boshen/use-axios.git",
+  "bugs": {
+    "url": "https://github.com/boshen/use-axios/issues"
+  },
+  "sideEffects": false,
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "./index.d.ts",
+  "scripts": {
+    "watch": "jest --watch",
+    "commit": "npx git-cz",
+    "release": "standard-version"
+  },
+  "peerDependencies": {
+    "axios": "^0.19.0",
+    "react": "^16.8.0"
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@testing-library/react-hooks": "^1.1.0",
+    "@types/jest": "^24.0.17",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "axios": "^0.19.0",
+    "axios-mock-adapter": "^1.17.0",
+    "commitizen": "^4.0.3",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.2",
+    "husky": "^3.0.2",
+    "jest": "^24.8.0",
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2",
+    "react": "^16.8.6",
+    "react-test-renderer": "^16.8.6",
+    "standard-version": "^7.0.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3"
+  },
+  "files": ["lib", "es", "src", "index.d.ts"],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.json": ["prettier --parser=json --write", "git add"],
+    "*.ts": ["eslint --fix", "git add"]
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
