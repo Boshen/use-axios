@@ -13,13 +13,13 @@ interface UseAxiosState<T> {
   error: AxiosError<T> | undefined
 }
 
-const toState = (loading: boolean, data?: any, error?: AxiosError) => ({
+const toState = <T>(loading: boolean, data?: T, error?: AxiosError) => ({
   data,
   loading,
   error,
 })
 
-const useAxios = <T>(config: UseAxiosConfig, dependencies: any[]) => {
+export const useAxios = <T>(config: UseAxiosConfig, dependencies: any[]) => {
   const skipRequest = config.skipRequest || (() => false)
   const useStateReturn = useState<UseAxiosState<T>>(toState(!skipRequest()))
   const state = useStateReturn[0]

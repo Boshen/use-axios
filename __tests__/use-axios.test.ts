@@ -3,10 +3,12 @@ import axiosMock from 'jest-mock-axios'
 import { AxiosRequestConfig } from 'axios'
 import * as sinon from 'sinon'
 
-import useAxios, { UseAxiosConfig } from '../src'
+import useAxiosDefault, { useAxios, UseAxiosConfig } from '../src'
 
 test('it should default export a function', () => {
   expect(useAxios).toBeInstanceOf(Function)
+  expect(useAxiosDefault).toBeInstanceOf(Function)
+  expect(useAxiosDefault).toBe(useAxios)
 })
 
 describe('useAxios', () => {
