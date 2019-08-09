@@ -3,7 +3,11 @@ import axiosMock from 'jest-mock-axios'
 import { AxiosRequestConfig } from 'axios'
 import * as sinon from 'sinon'
 
-import useAxiosDefault, { useAxios, UseAxiosConfig } from '../src'
+import useAxiosDefault, {
+  useAxios,
+  UseAxiosConfig,
+  UseAxiosResult,
+} from '../src'
 
 test('it should default export a function', () => {
   expect(useAxios).toBeInstanceOf(Function)
@@ -22,7 +26,7 @@ describe('useAxios', () => {
   })
 
   describe('without dependencies', () => {
-    let hook: RenderHookResult<any, any>
+    let hook: RenderHookResult<UseAxiosConfig, UseAxiosResult<{}>>
 
     beforeEach(() => {
       hook = renderHook((props) => useAxios(props, []), {
