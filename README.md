@@ -1,8 +1,13 @@
 [![CircleCI](https://circleci.com/gh/Boshen/use-axios/tree/master.svg?style=svg)](https://circleci.com/gh/Boshen/use-axios/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/Boshen/use-axios/badge.svg?branch=master)](https://coveralls.io/github/Boshen/use-axios?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Boshen/use-axios.svg)](https://greenkeeper.io/)
-[![Npm](https://img.shields.io/npm/v/use-axios.svg)](https://img.shields.io/npm/v/use-axios.svg)
+[![Npm Version](https://img.shields.io/npm/v/react-use-axios)](https://img.shields.io/npm/v/react-use-axios)
+[![License](https://img.shields.io/npm/l/react-use-axios)](https://img.shields.io/npm/l/react-use-axios)
 [![Twitter](https://img.shields.io/twitter/follow/BoshenBoshen.svg?style=social)](https://twitter.com/BoshenBoshen)
+
+[![Dependencies](https://img.shields.io/david/boshen/use-axios)](https://img.shields.io/david/boshen/use-axios)
+[![Peer Dependencies](https://img.shields.io/david/peer/boshen/use-axios)](https://img.shields.io/david/peer/boshen/use-axios)
+[![Dev Dependencies](https://img.shields.io/david/dev/boshen/use-axios)](https://img.shields.io/david/dev/boshen/use-axios)
 
 # useAxios
 
