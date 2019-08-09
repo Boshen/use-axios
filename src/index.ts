@@ -1,16 +1,32 @@
 import { useState, useEffect } from 'react'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
-const toState = (loading: boolean, data?: any, error?: Error) => ({
+interface UseAxiosState<T> {
+  data: T | undefined
+  loading: boolean
+  error: AxiosError<T> | undefined
+}
+
+export interface UseAxiosOptions {
+  skipRequest?: () => boolean
+}
+
+export type UseAxiosConfig = AxiosRequestConfig & UseAxiosOptions
+
+const toState = (loading: boolean, data?: any, error?: AxiosError) => ({
   data,
   loading,
   error,
 })
 
-const useAxios = (config: AxiosRequestConfig, dependencies: any[]) => {
-  const [state, setState] = useState(toState(true))
+const useAxios = <T>(config: UseAxiosConfig, dependencies: any[]) => {
+  const [state, setState] = useState<UseAxiosState<T>>(toState(true))
 
   useEffect(() => {
+    if (config.skipRequest && config.skipRequest()) {
+      return
+    }
+
     setState(toState(true))
 
     const source = axios.CancelToken.source()

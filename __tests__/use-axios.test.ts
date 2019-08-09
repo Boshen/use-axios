@@ -3,7 +3,7 @@ import axiosMock from 'jest-mock-axios'
 import { AxiosRequestConfig } from 'axios'
 import * as sinon from 'sinon'
 
-import useAxios from '../src'
+import useAxios, { UseAxiosConfig } from '../src'
 
 test('it should default export a function', () => {
   expect(useAxios).toBeInstanceOf(Function)
@@ -21,6 +21,7 @@ describe('useAxios', () => {
 
   describe('without dependencies', () => {
     let hook: RenderHookResult<any, any>
+
     beforeEach(() => {
       hook = renderHook((props) => useAxios(props, []), {
         initialProps: requestConfig,
@@ -110,15 +111,6 @@ describe('useAxios', () => {
   })
 
   describe('with dependencies', () => {
-    const requestConfig: AxiosRequestConfig = {
-      url: '/api',
-      method: 'get',
-    }
-
-    afterEach(() => {
-      axiosMock.reset()
-    })
-
     test('it should track dependencies', async () => {
       const dep1 = 'foo'
       const dep2 = 'bar'
@@ -162,6 +154,18 @@ describe('useAxios', () => {
       expect(axiosMock.lastReqGet().config.params).toEqual({
         test: dep2,
       })
+    })
+  })
+
+  describe('with skipRequest', () => {
+    test('it should skip initial request', async () => {
+      renderHook((config: UseAxiosConfig) => useAxios(config, []), {
+        initialProps: {
+          ...requestConfig,
+          skipRequest: () => true,
+        },
+      })
+      expect(axiosMock.request).not.toHaveBeenCalled()
     })
   })
 })
