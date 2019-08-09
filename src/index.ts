@@ -20,7 +20,9 @@ const toState = (loading: boolean, data?: any, error?: AxiosError) => ({
 })
 
 const useAxios = <T>(config: UseAxiosConfig, dependencies: any[]) => {
-  const [state, setState] = useState<UseAxiosState<T>>(toState(true))
+  const useStateReturn = useState<UseAxiosState<T>>(toState(true))
+  const state = useStateReturn[0]
+  const setState = useStateReturn[1]
 
   useEffect(() => {
     if (config.skipRequest && config.skipRequest()) {
@@ -31,7 +33,7 @@ const useAxios = <T>(config: UseAxiosConfig, dependencies: any[]) => {
 
     const source = axios.CancelToken.source()
     axios
-      .request({ ...config, cancelToken: source.token })
+      .request(Object.assign({}, config, { cancelToken: source.token }))
       .then((res) => {
         setState(toState(false, res.data))
       })

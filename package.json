@@ -13,21 +13,21 @@
   "sideEffects": false,
   "main": "lib/index.js",
   "module": "es/index.js",
-  "typings": "./index.d.ts",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "jest --coverage",
     "watch": "jest --watch",
     "lint": "eslint '{src,__tests__}/*.ts'",
     "commit": "npx git-cz",
     "release": "standard-version",
-    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "build": "yarn build:es5 && yarn build:module",
+    "build:es5": "rm -rf lib && tsc -p tsconfig.json --diagnostics --pretty",
+    "build:module": "rm -rf es && tsc -p tsconfig.json -m esnext --diagnostics --pretty --outDir es"
   },
   "peerDependencies": {
     "axios": "^0.19.0",
     "react": "^16.8.0"
-  },
-  "dependencies": {
-    "tslib": "^1.10.0"
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^1.1.0",
