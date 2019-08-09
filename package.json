@@ -51,7 +51,7 @@
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   },
-  "files": ["lib", "es", "src", "index.d.ts"],
+  "files": ["lib", "es", "src"],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
