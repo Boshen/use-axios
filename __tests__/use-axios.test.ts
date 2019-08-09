@@ -51,7 +51,6 @@ describe('useAxios', () => {
 
     test('it should do a successful request', async () => {
       const res = { data: true }
-      // @ts-ignore error TS2345: Argument of type '() => Promise<void>' is not assignable to parameter of type '() => void | undefined'.
       await act(async () => {
         axiosMock.mockResponse(res)
         await hook.waitForNextUpdate()
@@ -66,7 +65,6 @@ describe('useAxios', () => {
 
     test('it should do a failure request', async () => {
       const err = new Error()
-      // @ts-ignore
       await act(async () => {
         axiosMock.mockError(err)
         await hook.waitForNextUpdate()
@@ -111,8 +109,7 @@ describe('useAxios', () => {
 
       hook.unmount()
       expect(cancel.called).toBe(true)
-      // @ts-ignore
-      axiosMock.CancelToken.source.restore()
+      ;(axiosMock.CancelToken.source as sinon.SinonSpy).restore()
     })
   })
 
@@ -136,7 +133,6 @@ describe('useAxios', () => {
         test: dep1,
       })
 
-      // @ts-ignore
       await act(async () => {
         axiosMock.mockResponse({ data: dep1 })
         await hook.waitForNextUpdate()
