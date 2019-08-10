@@ -2,6 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/Boshen/use-axios/badge.svg?branch=master)](https://coveralls.io/github/Boshen/use-axios?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Boshen/use-axios.svg)](https://greenkeeper.io/)
 [![Npm Version](https://img.shields.io/npm/v/react-use-axios)](https://img.shields.io/npm/v/react-use-axios)
+[![Size](https://img.shields.io/bundlephobia/minzip/react-use-axios)](https://bundlephobia.com/result?p=react-use-axios)
 [![License](https://img.shields.io/npm/l/react-use-axios)](https://img.shields.io/npm/l/react-use-axios)
 [![Twitter](https://img.shields.io/twitter/follow/BoshenBoshen.svg?style=social)](https://twitter.com/BoshenBoshen)
 
