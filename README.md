@@ -7,7 +7,6 @@
 [![Twitter](https://img.shields.io/twitter/follow/BoshenBoshen.svg?style=social)](https://twitter.com/BoshenBoshen)
 
 [![Dependencies](https://img.shields.io/david/boshen/use-axios)](https://img.shields.io/david/boshen/use-axios)
-[![Peer Dependencies](https://img.shields.io/david/peer/boshen/use-axios)](https://img.shields.io/david/peer/boshen/use-axios)
 [![Dev Dependencies](https://img.shields.io/david/dev/boshen/use-axios)](https://img.shields.io/david/dev/boshen/use-axios)
 
 # useAxios

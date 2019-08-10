@@ -25,8 +25,8 @@
     "build:module": "rm -rf es && tsc -p tsconfig.json -m esnext --diagnostics --pretty --outDir es"
   },
   "peerDependencies": {
-    "axios": "~0.18.0",
-    "react": "~16.8.0"
+    "axios": ">=0.18",
+    "react": "^16.8.0"
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^2.0.1",
