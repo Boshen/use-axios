@@ -1,31 +1,44 @@
 import { useState, useEffect, DependencyList } from 'react'
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
+interface Success<T> {
+  type: 'success'
+  data: T | undefined
+}
+
+interface Loading {
+  type: 'loading'
+  data: boolean
+}
+
+interface Err<T> {
+  type: 'error'
+  data: AxiosError<T>
+}
+
+export type UseAxiosState<T> = Success<T> | Loading | Err<T>
+
 export interface UseAxiosOptions {
   skipRequest?: () => boolean
 }
-
 export type UseAxiosConfig = AxiosRequestConfig & UseAxiosOptions
 
-export interface UseAxiosResult<T> {
-  data: T | undefined
-  loading: boolean
-  error: AxiosError<T> | undefined
-}
-
-const toState = <T>(loading: boolean, data?: T, error?: AxiosError) => ({
+const success = <T>(data: T | undefined): Success<T> => ({
+  type: 'success',
   data,
-  loading,
-  error,
 })
+const loading = (): Loading => ({ type: 'loading', data: true })
+const error = <T>(err: AxiosError<T>): Err<T> => ({ type: 'error', data: err })
 
 export const useAxios = <T>(
   config: UseAxiosConfig,
   dependencies: DependencyList
-): UseAxiosResult<T> => {
+): UseAxiosState<T> => {
   const skipRequest = config.skipRequest || (() => false)
 
-  const useStateReturn = useState<UseAxiosResult<T>>(toState(!skipRequest()))
+  const useStateReturn = useState<UseAxiosState<T>>(
+    skipRequest() ? success(undefined) : loading()
+  )
   const state = useStateReturn[0]
   const setState = useStateReturn[1]
 
@@ -34,7 +47,7 @@ export const useAxios = <T>(
   const setPrevDeps = prevDepsReturn[1]
 
   if (!areHookInputsEqual(dependencies, prevDeps)) {
-    setState(toState(!skipRequest()))
+    setState(skipRequest() ? success(undefined) : loading())
     setPrevDeps(dependencies)
   }
 
@@ -43,19 +56,19 @@ export const useAxios = <T>(
       return
     }
 
-    setState(toState(true))
+    setState(loading())
 
     const source = axios.CancelToken.source()
     axios
       .request(Object.assign({}, config, { cancelToken: source.token }))
       .then((res) => {
-        setState(toState(false, res.data))
+        setState(success(res.data))
       })
       .catch((err) => {
         if (axios.isCancel(err)) {
           return
         }
-        setState(toState(false, undefined, err))
+        setState(error(err))
       })
     return () => {
       source.cancel()

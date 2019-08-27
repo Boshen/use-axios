@@ -60,7 +60,7 @@ interface ResponseObject {
 const Component: React.FunctionComponent<Props> = (props) => {
   const { foo } = props
 
-  const { data: objects = [] as ResponseObject[], loading, error } = useAxios<ResponseObject[]>(
+  const res = useAxios<ResponseObject[]>(
     {
       url: '/api',
       method: 'get',
@@ -68,9 +68,9 @@ const Component: React.FunctionComponent<Props> = (props) => {
     [foo]
   )
 
-  if (loading) return 'loading'
-  if (error) return 'error'
-  if (objects.length === 0) return 'empty'
+  if (res.type === 'loading') return 'loading'
+  if (res.type === 'error') return 'error'
+  if (res.data.length === 0) return 'empty'
   return objects
 }
 ```
@@ -83,6 +83,20 @@ useAxios({
   method: 'get',
   skipRequest: () => !foo
 }, [foo])
+```
+
+### Callbacks
+useEffect to the rescure:
+```typescript
+const res = useAxios({ url: '/api', method: 'get' }, [])
+useEffect(() => {
+  if (res.type === 'success') {
+    console.info(res.data)
+  }
+  if (res.type === 'error') {
+    console.error(res.data)
+  }
+}, [res])
 ```
 
 ### Cancelling request on component unmount

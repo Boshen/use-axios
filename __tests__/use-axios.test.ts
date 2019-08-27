@@ -6,7 +6,7 @@ import * as sinon from 'sinon'
 import useAxiosDefault, {
   useAxios,
   UseAxiosConfig,
-  UseAxiosResult,
+  UseAxiosState,
 } from '../src'
 
 test('it should default export a function', () => {
@@ -26,7 +26,7 @@ describe('useAxios', () => {
   })
 
   describe('without dependencies', () => {
-    let hook: RenderHookResult<UseAxiosConfig, UseAxiosResult<{}>>
+    let hook: RenderHookResult<UseAxiosConfig, UseAxiosState<{}>>
 
     beforeEach(() => {
       hook = renderHook((props) => useAxios(props, []), {
@@ -36,9 +36,8 @@ describe('useAxios', () => {
 
     test('it should return initial state', () => {
       expect(hook.result.current).toEqual({
-        data: undefined,
-        loading: true,
-        error: undefined,
+        type: 'loading',
+        data: true,
       })
     })
 
@@ -57,9 +56,8 @@ describe('useAxios', () => {
       })
 
       expect(hook.result.current).toEqual({
+        type: 'success',
         data: res.data,
-        loading: false,
-        error: undefined,
       })
     })
 
@@ -71,9 +69,8 @@ describe('useAxios', () => {
       })
 
       expect(hook.result.current).toEqual({
-        data: undefined,
-        loading: false,
-        error: err,
+        type: 'error',
+        data: err,
       })
     })
   })
@@ -87,9 +84,8 @@ describe('useAxios', () => {
       axiosMock.mockError(new axiosMock.Cancel())
 
       expect(hook.result.current).toEqual({
-        data: undefined,
-        loading: true,
-        error: undefined,
+        type: 'loading',
+        data: true,
       })
     })
 
@@ -149,9 +145,8 @@ describe('useAxios', () => {
       })
 
       expect(hook.result.current).toEqual({
-        data: undefined,
-        loading: true,
-        error: undefined,
+        type: 'loading',
+        data: true,
       })
       expect(axiosMock.lastReqGet().config.params).toEqual({
         test: dep2,
