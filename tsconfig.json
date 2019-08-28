@@ -7,7 +7,7 @@
     "downlevelIteration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": false,
+    "importHelpers": true,
     "inlineSourceMap": false,
     "jsx": "react",
     "lib": ["es2015"],

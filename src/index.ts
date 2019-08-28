@@ -35,12 +35,14 @@ export const useAxios = <T>(
   config: UseAxiosConfig,
   dependencies: DependencyList
 ): UseAxiosResponse<T> => {
-  const skipRequest = config.skipRequest || (() => false)
+  const { skipRequest = () => false, ...axiosConfig } = config
+
   const [rerun, setRerun] = useState(false)
 
   const [state, setState] = useState<UseAxiosState<T>>(
     skipRequest() ? success(undefined) : loading()
   )
+
   const [prevDeps, setPrevDeps] = useState(dependencies)
 
   if (!areHookInputsEqual(dependencies, prevDeps)) {
@@ -57,7 +59,7 @@ export const useAxios = <T>(
 
     const source = axios.CancelToken.source()
     axios
-      .request(Object.assign({}, config, { cancelToken: source.token }))
+      .request({ ...axiosConfig, cancelToken: source.token })
       .then((res) => {
         setState(success(res.data))
       })
@@ -74,7 +76,10 @@ export const useAxios = <T>(
     }
   }, dependencies.concat(rerun))
 
-  return Object.assign({}, state, { rerun: () => setRerun(true) })
+  return {
+    ...state,
+    rerun: () => setRerun(true),
+  }
 }
 
 function areHookInputsEqual(

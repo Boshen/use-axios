@@ -21,12 +21,13 @@
     "release": "standard-version",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "build": "yarn build:es5 && yarn build:module",
-    "build:es5": "rm -rf lib && tsc -p tsconfig.json --diagnostics --pretty",
-    "build:module": "rm -rf es && tsc -p tsconfig.json -m esnext --diagnostics --pretty --outDir es"
+    "build:es5": "rm -rf lib && tsc -p tsconfig.json --pretty",
+    "build:module": "rm -rf es && tsc -p tsconfig.json -m esnext --outDir es"
   },
   "peerDependencies": {
     "axios": ">=0.18",
-    "react": "^16.8.0"
+    "react": "^16.8.0",
+    "tslib": "*"
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^2.0.1",
@@ -50,6 +51,7 @@
     "sinon": "^7.4.1",
     "standard-version": "^7.0.0",
     "ts-jest": "^24.0.2",
+    "tslib": "^1.10.0",
     "typescript": "^3.5.3"
   },
   "files": ["lib", "es", "src"],
