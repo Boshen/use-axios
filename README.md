@@ -60,7 +60,7 @@ interface ResponseObject {
 const Component: React.FunctionComponent<Props> = (props) => {
   const { foo } = props
 
-  const res = useAxios<ResponseObject[]>(
+  const [res] = useAxios<ResponseObject[]>(
     {
       url: '/api',
       method: 'get',
@@ -88,7 +88,7 @@ useAxios({
 ### Callbacks
 useEffect to the rescure:
 ```typescript
-const res = useAxios({ url: '/api', method: 'get' }, [])
+const [res] = useAxios({ url: '/api', method: 'get' }, [])
 useEffect(() => {
   if (res.type === 'success') {
     console.info(res.data)
@@ -102,9 +102,9 @@ useEffect(() => {
 ### Rerun
 `rerun` will retrigger the request even if you have skipped request, useful for callback triggered requests
 ```typescript
-const res = useAxios({ url: '/api', method: 'get', skipRequest: () => true }, [])
+const [res, {rerun}] = useAxios({ url: '/api', method: 'get', skipRequest: () => true }, [])
 const onClick = () => {
-  res.rerun()
+  rerun()
 }
 <button onClick={onClick} />
 ```
