@@ -113,10 +113,6 @@ const onClick = () => {
 useAxios uses the axios cancel token to cancel requests, so requests are automatically canceled when a component unmounts.
 
 ## Note on source code
-Why are you not using the destructuring assignment (e.g. `const [state, setState] = useState()` syntax?
-
-Because typescript emits some extra code for this syntax, and I want to avoid that.
-
 What's with the `areHookInputsEqual`?
 
 This dependencies comparison is copied from the React codebase.
