@@ -1,4 +1,4 @@
-import { useState, useEffect, DependencyList } from 'react'
+import { useState, useEffect, DependencyList, Dispatch } from 'react'
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
 interface Success<T> {
@@ -17,6 +17,7 @@ interface Err<T> {
 }
 
 export type UseAxiosState<T> = Success<T> | Loading | Err<T>
+export type UseAxiosResponse<T> = UseAxiosState<T> & { rerun: Dispatch<void> }
 
 export interface UseAxiosOptions {
   skipRequest?: () => boolean
@@ -33,18 +34,14 @@ const error = <T>(err: AxiosError<T>): Err<T> => ({ type: 'error', data: err })
 export const useAxios = <T>(
   config: UseAxiosConfig,
   dependencies: DependencyList
-): UseAxiosState<T> => {
+): UseAxiosResponse<T> => {
   const skipRequest = config.skipRequest || (() => false)
+  const [rerun, setRerun] = useState(false)
 
-  const useStateReturn = useState<UseAxiosState<T>>(
+  const [state, setState] = useState<UseAxiosState<T>>(
     skipRequest() ? success(undefined) : loading()
   )
-  const state = useStateReturn[0]
-  const setState = useStateReturn[1]
-
-  const prevDepsReturn = useState(dependencies)
-  const prevDeps = prevDepsReturn[0]
-  const setPrevDeps = prevDepsReturn[1]
+  const [prevDeps, setPrevDeps] = useState(dependencies)
 
   if (!areHookInputsEqual(dependencies, prevDeps)) {
     setState(skipRequest() ? success(undefined) : loading())
@@ -52,7 +49,7 @@ export const useAxios = <T>(
   }
 
   useEffect(() => {
-    if (skipRequest()) {
+    if (!rerun && skipRequest()) {
       return
     }
 
@@ -70,12 +67,14 @@ export const useAxios = <T>(
         }
         setState(error(err))
       })
+
+    setRerun(false)
     return () => {
       source.cancel()
     }
-  }, dependencies)
+  }, dependencies.concat(rerun))
 
-  return state
+  return Object.assign({}, state, { rerun: () => setRerun(true) })
 }
 
 function areHookInputsEqual(

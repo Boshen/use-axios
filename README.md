@@ -99,6 +99,16 @@ useEffect(() => {
 }, [res])
 ```
 
+### Rerun
+`rerun` will retrigger the request even if you have skipped request, useful for callback triggered requests
+```typescript
+const res = useAxios({ url: '/api', method: 'get', skipRequest: () => true }, [])
+const onClick = () => {
+  res.rerun()
+}
+<button onClick={onClick} />
+```
+
 ### Cancelling request on component unmount
 useAxios uses the axios cancel token to cancel requests, so requests are automatically canceled when a component unmounts.
 

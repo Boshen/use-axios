@@ -35,7 +35,7 @@ describe('useAxios', () => {
     })
 
     test('it should return initial state', () => {
-      expect(hook.result.current).toEqual({
+      expect(hook.result.current).toMatchObject({
         type: 'loading',
         data: true,
       })
@@ -55,7 +55,7 @@ describe('useAxios', () => {
         await hook.waitForNextUpdate()
       })
 
-      expect(hook.result.current).toEqual({
+      expect(hook.result.current).toMatchObject({
         type: 'success',
         data: res.data,
       })
@@ -68,7 +68,7 @@ describe('useAxios', () => {
         await hook.waitForNextUpdate()
       })
 
-      expect(hook.result.current).toEqual({
+      expect(hook.result.current).toMatchObject({
         type: 'error',
         data: err,
       })
@@ -83,7 +83,7 @@ describe('useAxios', () => {
 
       axiosMock.mockError(new axiosMock.Cancel())
 
-      expect(hook.result.current).toEqual({
+      expect(hook.result.current).toMatchObject({
         type: 'loading',
         data: true,
       })
@@ -144,7 +144,7 @@ describe('useAxios', () => {
         deps: [dep2],
       })
 
-      expect(hook.result.current).toEqual({
+      expect(hook.result.current).toMatchObject({
         type: 'loading',
         data: true,
       })
@@ -163,6 +163,27 @@ describe('useAxios', () => {
         },
       })
       expect(axiosMock.request).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('rerun', () => {
+    test('it should rerun the request', async () => {
+      const hook = renderHook(
+        (config: UseAxiosConfig) => useAxios(config, []),
+        {
+          initialProps: {
+            ...requestConfig,
+            skipRequest: () => true,
+          },
+        }
+      )
+      expect(axiosMock.request).not.toHaveBeenCalled()
+      act(() => hook.result.current.rerun())
+      await act(async () => {
+        axiosMock.mockResponse({ data: {} })
+        await hook.waitForNextUpdate()
+      })
+      expect(axiosMock.request).toHaveBeenCalled()
     })
   })
 })
