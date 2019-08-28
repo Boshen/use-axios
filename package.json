@@ -1,6 +1,6 @@
 {
   "name": "react-use-axios",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "useAxios react hook",
   "license": "MIT",
   "author": "Boshen <boshenc@gmail.com>",
