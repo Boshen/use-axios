@@ -1,9 +1,14 @@
 import { useState, useEffect, DependencyList, Dispatch } from 'react'
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
+interface Idle {
+  type: 'idle'
+  data: null
+}
+
 interface Success<T> {
   type: 'success'
-  data: T | null
+  data: T
 }
 
 interface Loading {
@@ -16,7 +21,7 @@ interface Err<T> {
   data: AxiosError<T>
 }
 
-export type UseAxiosState<T> = Success<T> | Loading | Err<T>
+export type UseAxiosState<T> = Idle | Success<T> | Loading | Err<T>
 export type UseAxiosResponse<T> = UseAxiosState<T> & { rerun: Dispatch<void> }
 
 export interface UseAxiosOptions {
@@ -24,6 +29,7 @@ export interface UseAxiosOptions {
 }
 export type UseAxiosConfig = AxiosRequestConfig & UseAxiosOptions
 
+const idle = (): Idle => ({ type: 'idle', data: null })
 const success = <T>(data: T): Success<T> => ({
   type: 'success',
   data,
@@ -40,13 +46,13 @@ export const useAxios = <T>(
   const [rerun, setRerun] = useState(false)
 
   const [state, setState] = useState<UseAxiosState<T>>(
-    skipRequest() ? success(null) : loading()
+    skipRequest() ? idle() : loading()
   )
 
   const [prevDeps, setPrevDeps] = useState(dependencies)
 
   if (!areHookInputsEqual(dependencies, prevDeps)) {
-    setState(skipRequest() ? success(null) : loading())
+    setState(skipRequest() ? idle() : loading())
     setPrevDeps(dependencies)
   }
 
