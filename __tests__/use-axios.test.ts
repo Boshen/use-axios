@@ -208,4 +208,22 @@ describe('useAxios', () => {
       expect(axiosMock.request).toHaveBeenCalled()
     })
   })
+
+  describe('type check', () => {
+    test('x', () => {
+      const hook = renderHook(() => useAxios<number>({}, []))
+      const res = hook.result.current
+      switch (res.type) {
+        case 'success':
+          expect(res.data)
+          break
+        case 'loading':
+          expect(res.data)
+          break
+        case 'error':
+          expect(res.data)
+          break
+      }
+    })
+  })
 })

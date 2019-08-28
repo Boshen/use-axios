@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
 interface Success<T> {
   type: 'success'
-  data: T | undefined
+  data: T | null
 }
 
 interface Loading {
@@ -24,7 +24,7 @@ export interface UseAxiosOptions {
 }
 export type UseAxiosConfig = AxiosRequestConfig & UseAxiosOptions
 
-const success = <T>(data?: T): Success<T> => ({
+const success = <T>(data: T): Success<T> => ({
   type: 'success',
   data,
 })
@@ -40,13 +40,13 @@ export const useAxios = <T>(
   const [rerun, setRerun] = useState(false)
 
   const [state, setState] = useState<UseAxiosState<T>>(
-    skipRequest() ? success() : loading()
+    skipRequest() ? success(null) : loading()
   )
 
   const [prevDeps, setPrevDeps] = useState(dependencies)
 
   if (!areHookInputsEqual(dependencies, prevDeps)) {
-    setState(skipRequest() ? success() : loading())
+    setState(skipRequest() ? success(null) : loading())
     setPrevDeps(dependencies)
   }
 
