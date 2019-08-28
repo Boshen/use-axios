@@ -1,28 +1,31 @@
 import { useState, useEffect, DependencyList, Dispatch } from 'react'
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
-interface Idle {
+export interface Idle {
   type: 'idle'
   data: null
 }
 
-interface Success<T> {
+export interface Success<T> {
   type: 'success'
   data: T
 }
 
-interface Loading {
+export interface Loading {
   type: 'loading'
   data: boolean
 }
 
-interface Err<T> {
+export interface Err<T> {
   type: 'error'
   data: AxiosError<T>
 }
 
+export interface UseAxiosControls {
+  rerun: Dispatch<void>
+}
 export type UseAxiosState<T> = Idle | Success<T> | Loading | Err<T>
-export type UseAxiosResponse<T> = UseAxiosState<T> & { rerun: Dispatch<void> }
+export type UseAxiosResponse<T> = [UseAxiosState<T>, UseAxiosControls]
 
 export interface UseAxiosOptions {
   skipRequest?: () => boolean
@@ -56,15 +59,10 @@ export const useAxios = <T>(
     setPrevDeps(dependencies)
   }
 
-  useEffect(() => {
-    if (!rerun && skipRequest()) {
-      return
-    }
-
+  const request = () => {
     setState(loading())
-
     const source = axios.CancelToken.source()
-    axios
+    const promise = axios
       .request({ ...axiosConfig, cancelToken: source.token })
       .then((res) => {
         setState(success(res.data))
@@ -75,17 +73,26 @@ export const useAxios = <T>(
         }
         setState(error(err))
       })
+    return { source, promise }
+  }
 
-    setRerun(false)
-    return () => {
-      source.cancel()
-    }
-  }, dependencies.concat(rerun))
+  useEffect(() => {
+    if (skipRequest()) return
+    const { source } = request()
+    return () => source.cancel()
+  }, dependencies)
 
-  return {
-    ...state,
+  useEffect(() => {
+    if (!rerun) return
+    const { source, promise } = request()
+    promise.then(() => setRerun(false))
+    return () => source.cancel()
+  }, [rerun])
+
+  const controls = {
     rerun: () => setRerun(true),
   }
+  return [state, controls]
 }
 
 function areHookInputsEqual(

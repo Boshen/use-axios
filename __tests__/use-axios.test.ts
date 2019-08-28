@@ -6,7 +6,7 @@ import * as sinon from 'sinon'
 import useAxiosDefault, {
   useAxios,
   UseAxiosConfig,
-  UseAxiosState,
+  UseAxiosResponse,
 } from '../src'
 
 test('it should default export a function', () => {
@@ -26,7 +26,7 @@ describe('useAxios', () => {
   })
 
   describe('without dependencies', () => {
-    let hook: RenderHookResult<UseAxiosConfig, UseAxiosState<{}>>
+    let hook: RenderHookResult<UseAxiosConfig, UseAxiosResponse<{}>>
 
     beforeEach(() => {
       hook = renderHook((props) => useAxios(props, []), {
@@ -35,7 +35,7 @@ describe('useAxios', () => {
     })
 
     test('it should return initial state', () => {
-      expect(hook.result.current).toMatchObject({
+      expect(hook.result.current[0]).toEqual({
         type: 'loading',
         data: true,
       })
@@ -55,7 +55,7 @@ describe('useAxios', () => {
         await hook.waitForNextUpdate()
       })
 
-      expect(hook.result.current).toMatchObject({
+      expect(hook.result.current[0]).toEqual({
         type: 'success',
         data: res.data,
       })
@@ -68,7 +68,7 @@ describe('useAxios', () => {
         await hook.waitForNextUpdate()
       })
 
-      expect(hook.result.current).toMatchObject({
+      expect(hook.result.current[0]).toEqual({
         type: 'error',
         data: err,
       })
@@ -83,7 +83,7 @@ describe('useAxios', () => {
 
       axiosMock.mockError(new axiosMock.Cancel())
 
-      expect(hook.result.current).toMatchObject({
+      expect(hook.result.current[0]).toEqual({
         type: 'loading',
         data: true,
       })
@@ -144,7 +144,7 @@ describe('useAxios', () => {
         deps: [dep2],
       })
 
-      expect(hook.result.current).toMatchObject({
+      expect(hook.result.current[0]).toEqual({
         type: 'loading',
         data: true,
       })
@@ -200,7 +200,7 @@ describe('useAxios', () => {
         }
       )
       expect(axiosMock.request).not.toHaveBeenCalled()
-      act(() => hook.result.current.rerun())
+      act(() => hook.result.current[1].rerun())
       await act(async () => {
         axiosMock.mockResponse({ data: {} })
         await hook.waitForNextUpdate()
@@ -212,7 +212,7 @@ describe('useAxios', () => {
   describe('type check', () => {
     test('x', () => {
       const hook = renderHook(() => useAxios<number>({}, []))
-      const res = hook.result.current
+      const res = hook.result.current[0]
       switch (res.type) {
         case 'success':
           expect(res.data)
