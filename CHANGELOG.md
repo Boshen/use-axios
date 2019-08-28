@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/Boshen/use-axios/compare/v1.0.3...v2.0.0) (2019-08-28)
+
+
+### Features
+
+* **useAxios:** implement rerun ([09c8053](https://github.com/Boshen/use-axios/commit/09c8053))
+* **useAxios:** import tslib ([3d3f687](https://github.com/Boshen/use-axios/commit/3d3f687))
+* **useAxios:** use ADT as the response object instead of the confusing {data,loading,error} object ([cfa058c](https://github.com/Boshen/use-axios/commit/cfa058c))
+
 ### [1.0.3](https://github.com/Boshen/use-axios/compare/v1.0.2...v1.0.3) (2019-08-10)
 
 ### [1.0.2](https://github.com/Boshen/use-axios/compare/v1.0.1...v1.0.2) (2019-08-10)
