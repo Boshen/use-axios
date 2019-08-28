@@ -18,7 +18,7 @@
     "test": "jest --coverage",
     "watch": "jest --watch",
     "lint": "eslint '{src,__tests__}/*.ts'",
-    "release": "standard-version",
+    "release": "yarn build && standard-version",
     "coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "build": "yarn build:es5 && yarn build:module",
     "build:es5": "rm -rf lib && tsc -p tsconfig.json --pretty",
