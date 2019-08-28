@@ -164,6 +164,28 @@ describe('useAxios', () => {
       })
       expect(axiosMock.request).not.toHaveBeenCalled()
     })
+
+    test('it should skip subsequent requests', async () => {
+      const dep1 = 'foo'
+      const dep2 = 'bar'
+      const config = {
+        ...requestConfig,
+        skipRequest: () => true,
+      }
+      const hook = renderHook(({ config, deps }) => useAxios(config, deps), {
+        initialProps: {
+          config,
+          deps: [dep1],
+        },
+      })
+      expect(axiosMock.request).not.toHaveBeenCalled()
+
+      hook.rerender({
+        config,
+        deps: [dep2],
+      })
+      expect(axiosMock.request).not.toHaveBeenCalled()
+    })
   })
 
   describe('rerun', () => {

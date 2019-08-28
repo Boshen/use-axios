@@ -24,7 +24,7 @@ export interface UseAxiosOptions {
 }
 export type UseAxiosConfig = AxiosRequestConfig & UseAxiosOptions
 
-const success = <T>(data: T | undefined): Success<T> => ({
+const success = <T>(data?: T): Success<T> => ({
   type: 'success',
   data,
 })
@@ -40,13 +40,13 @@ export const useAxios = <T>(
   const [rerun, setRerun] = useState(false)
 
   const [state, setState] = useState<UseAxiosState<T>>(
-    skipRequest() ? success(undefined) : loading()
+    skipRequest() ? success() : loading()
   )
 
   const [prevDeps, setPrevDeps] = useState(dependencies)
 
   if (!areHookInputsEqual(dependencies, prevDeps)) {
-    setState(skipRequest() ? success(undefined) : loading())
+    setState(skipRequest() ? success() : loading())
     setPrevDeps(dependencies)
   }
 
