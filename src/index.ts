@@ -1,4 +1,4 @@
-import { useState, useEffect, DependencyList, Dispatch } from 'react'
+import { useState, useEffect, DependencyList } from 'react'
 import axios, { AxiosRequestConfig, AxiosError } from 'axios'
 
 export interface Idle {
@@ -22,7 +22,7 @@ export interface Err<T> {
 }
 
 export interface UseAxiosControls {
-  rerun: Dispatch<void>
+  rerun: () => void
 }
 export type UseAxiosState<T> = Idle | Success<T> | Loading | Err<T>
 export type UseAxiosResponse<T> = [UseAxiosState<T>, UseAxiosControls]
