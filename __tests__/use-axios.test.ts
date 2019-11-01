@@ -26,7 +26,7 @@ describe('useAxios', () => {
   })
 
   describe('without dependencies', () => {
-    let hook: RenderHookResult<UseAxiosConfig, UseAxiosResponse<{}>>
+    let hook: RenderHookResult<UseAxiosConfig, UseAxiosResponse<{}, {}>>
 
     beforeEach(() => {
       hook = renderHook((props) => useAxios(props, []), {
@@ -210,8 +210,8 @@ describe('useAxios', () => {
   })
 
   describe('type check', () => {
-    test('x', () => {
-      const hook = renderHook(() => useAxios<number>({}, []))
+    test('check', () => {
+      const hook = renderHook(() => useAxios<number, string>({}, []))
       const res = hook.result.current[0]
       switch (res.type) {
         case 'success':

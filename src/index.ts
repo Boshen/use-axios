@@ -24,8 +24,8 @@ export interface Err<T> {
 export interface UseAxiosControls {
   rerun: () => void
 }
-export type UseAxiosState<T> = Idle | Success<T> | Loading | Err<T>
-export type UseAxiosResponse<T> = [UseAxiosState<T>, UseAxiosControls]
+export type UseAxiosState<S, U> = Idle | Success<S> | Loading | Err<U>
+export type UseAxiosResponse<S, U> = [UseAxiosState<S, U>, UseAxiosControls]
 
 export interface UseAxiosOptions {
   skipRequest?: () => boolean
@@ -40,15 +40,15 @@ const success = <T>(data: T): Success<T> => ({
 const loading = (): Loading => ({ type: 'loading', data: true })
 const error = <T>(err: AxiosError<T>): Err<T> => ({ type: 'error', data: err })
 
-export const useAxios = <T>(
+export const useAxios = <S = any, U = any>(
   config: UseAxiosConfig,
   dependencies: DependencyList
-): UseAxiosResponse<T> => {
+): UseAxiosResponse<S, U> => {
   const { skipRequest = () => false, ...axiosConfig } = config
 
   const [rerun, setRerun] = useState(false)
 
-  const [state, setState] = useState<UseAxiosState<T>>(
+  const [state, setState] = useState<UseAxiosState<S, U>>(
     skipRequest() ? idle() : loading()
   )
 
